@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Delhi – Breeze-Trip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #e85d04;
+      --grad: linear-gradient(135deg, #e85d04 0%, #dc2626 100%);
+      --dark: #0d1b2a;
+      --text: #1a2b3c;
+      --sub: #5a6a7a;
+      --light: #fff5f0;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; background: #fafafa; color: var(--text); overflow-x: hidden; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 48px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(232,93,4,0.12);
+      box-shadow: 0 2px 20px rgba(232,93,4,0.07);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg,#1a8fe3,#0ecda1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .back-btn { display: flex; align-items: center; gap: 8px; text-decoration: none; background: var(--grad); color: #fff; padding: 9px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s; }
+    .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232,93,4,0.35); }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 66px;
+      height: 85vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-slider { display: flex; width: 200%; height: 100%; animation: slide 10s ease-in-out infinite; }
+    .hero-slide { width: 50%; height: 100%; position: relative; }
+    .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
+    @keyframes slide { 0%,45%{transform:translateX(0)} 50%,95%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 60%, rgba(13,27,42,0.95) 100%);
+    }
+    .hero-content {
+      position: absolute; bottom: 48px; left: 0; right: 0;
+      padding: 0 60px;
+    }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 16px; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem,6vw,4.5rem); color: #fff; text-shadow: 0 4px 24px rgba(0,0,0,0.4); margin-bottom: 10px; }
+    .hero-sub { color: rgba(255,255,255,0.75); font-size: 1.05rem; margin-bottom: 22px; max-width: 600px; }
+    .hero-stats { display: flex; gap: 28px; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.4rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ── QUICK INFO BAR ── */
+    .info-bar {
+      background: #fff;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      padding: 0 60px;
+    }
+    .info-bar-inner { display: flex; flex-wrap: wrap; gap: 0; max-width: 1200px; margin: 0 auto; }
+    .info-item { display: flex; align-items: center; gap: 12px; padding: 20px 32px 20px 0; border-right: 1px solid #f0f0f0; flex: 1; min-width: 150px; }
+    .info-item:last-child { border-right: none; }
+    .info-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: var(--light); color: var(--primary); flex-shrink: 0; }
+    .info-label { font-size: 0.7rem; color: var(--sub); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+    .info-val { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+
+    /* ── MAIN CONTENT LAYOUT ── */
+    .page-wrap { max-width: 1200px; margin: 60px auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 340px; gap: 48px; }
+
+    /* ── LEFT COLUMN ── */
+    .section { margin-bottom: 48px; }
+    .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .section-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--light); color: var(--primary); font-size: 1.1rem; }
+    .section-head h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+    .section-body { font-size: 0.92rem; color: var(--sub); line-height: 1.85; }
+    .section-body p + p { margin-top: 14px; }
+    .section-body strong { color: var(--text); font-weight: 600; }
+
+    /* highlights grid */
+    .hl-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 4px; }
+    .hl-card { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid #f0ece8; box-shadow: 0 4px 18px rgba(0,0,0,0.06); transition: transform 0.3s, box-shadow 0.3s; }
+    .hl-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(232,93,4,0.12); }
+    .hl-emoji { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+    .hl-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .hl-card p { font-size: 0.78rem; color: var(--sub); line-height: 1.6; }
+
+    /* Food section */
+    .food-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .food-item { background: #fff; border-radius: 14px; padding: 16px 14px; text-align: center; border: 1px solid #f0ece8; box-shadow: 0 3px 14px rgba(0,0,0,0.05); }
+    .food-item .emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .food-item h5 { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .food-item p { font-size: 0.7rem; color: var(--sub); }
+
+    /* Tips */
+    .tips-list { list-style: none; }
+    .tips-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+    .tips-list li:last-child { border-bottom: none; }
+    .tip-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; margin-top: 2px; }
+    .tips-list li p { font-size: 0.85rem; color: var(--sub); line-height: 1.6; }
+    .tips-list li strong { color: var(--text); }
+
+    /* Season table */
+    .season-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .season-card { border-radius: 14px; padding: 16px 12px; text-align: center; }
+    .season-card.best { background: linear-gradient(135deg,#fff5f0,#ffe4d4); border: 1px solid rgba(232,93,4,0.2); }
+    .season-card.ok { background: #f9f9f9; border: 1px solid #eee; }
+    .season-card.avoid { background: #fff8f8; border: 1px solid #fdd; }
+    .season-emoji { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+    .season-card h5 { font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .season-card p { font-size: 0.7rem; color: var(--sub); }
+    .season-badge { display: inline-block; font-size: 0.62rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-top: 6px; }
+    .best .season-badge { background: var(--primary); color: #fff; }
+    .ok .season-badge { background: #ddd; color: #666; }
+    .avoid .season-badge { background: #dc2626; color: #fff; }
+
+    /* ── RIGHT SIDEBAR ── */
+    .sidebar { position: sticky; top: 86px; }
+
+    .budget-card {
+      background: linear-gradient(135deg, #e85d04, #dc2626);
+      border-radius: 22px;
+      padding: 28px 24px;
+      color: #fff;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 40px rgba(232,93,4,0.35);
+    }
+    .budget-card h3 { font-size: 1rem; font-weight: 600; opacity: 0.85; margin-bottom: 6px; }
+    .budget-price { font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+    .budget-price span { font-size: 1rem; font-weight: 400; opacity: 0.75; }
+    .budget-divider { height: 1px; background: rgba(255,255,255,0.2); margin: 16px 0; }
+    .budget-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.82rem; }
+    .budget-row:last-child { margin-bottom: 0; }
+    .budget-label { opacity: 0.75; }
+    .budget-amount { font-weight: 700; }
+    .book-btn {
+      display: block; width: 100%; margin-top: 20px;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.5);
+      color: #fff; padding: 13px; border-radius: 50px;
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; text-align: center; text-decoration: none;
+    }
+    .book-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .sidebar-card { background: #fff; border-radius: 20px; padding: 24px; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .sidebar-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .sidebar-card h4 i { color: var(--primary); }
+
+    .transport-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+    .transport-item:last-child { border-bottom: none; }
+    .transport-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .transport-info { flex: 1; }
+    .transport-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .transport-desc { font-size: 0.72rem; color: var(--sub); }
+    .transport-cost { font-size: 0.78rem; font-weight: 700; color: var(--primary); }
+
+    .nearby-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f5f5f5; }
+    .nearby-item:last-child { border-bottom: none; }
+    .nearby-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .nearby-dist { font-size: 0.72rem; color: var(--sub); }
+
+    /* ── GALLERY ── */
+    .gallery-section { padding: 60px 40px; background: #fff; }
+    .gallery-section h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; text-align: center; color: var(--text); margin-bottom: 32px; }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 900px; margin: 0 auto; }
+    .gallery-grid img { width: 100%; height: 320px; object-fit: cover; border-radius: 18px; transition: transform 0.3s; cursor: pointer; }
+    .gallery-grid img:hover { transform: scale(1.02); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); color: rgba(255,255,255,0.7); text-align: center; padding: 32px 20px; font-size: 0.85rem; }
+    footer a { color: #1a8fe3; text-decoration: none; }
+
+    /* Scroll top */
+    #scrollTop { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; background: var(--grad); color: #fff; border: none; border-radius: 50%; font-size: 1rem; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(232,93,4,0.4); z-index: 999; }
+
+    @media (max-width: 900px) {
+      .page-wrap { grid-template-columns: 1fr; padding: 0 20px; }
+      .sidebar { position: static; }
+      nav { padding: 14px 20px; }
+      .hero-content { padding: 0 24px; }
+      .info-bar { padding: 0 20px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .food-grid { grid-template-columns: repeat(2,1fr); }
+      .season-grid { grid-template-columns: repeat(2,1fr); }
+      .hl-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-brand" href="index.html"><i class="fa-solid fa-paper-plane"></i> Breeze-Trip</a>
+  <a class="back-btn" href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+</nav>
+
+<!-- HERO with Image Slider -->
+<div class="hero">
+  <div class="hero-slider">
+    <div class="hero-slide">
+      <img src="delhi_redfort.jpg" alt="Red Fort Delhi" />
+    </div>
+    <div class="hero-slide">
+      <img src="delhi_indiagate.jpg" alt="India Gate Delhi" />
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fa-solid fa-location-dot"></i> Delhi NCR, India</div>
+    <h1 class="hero-title">New Delhi</h1>
+    <p class="hero-sub">India's vibrant capital — where Mughal grandeur meets modern ambition, ancient temples stand beside glass towers, and every street tells a thousand stories.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">⭐ 4.7</div><div class="stat-label">Rating</div></div>
+      <div class="stat"><div class="stat-num">32M+</div><div class="stat-label">Population</div></div>
+      <div class="stat"><div class="stat-num">3–5</div><div class="stat-label">Ideal Days</div></div>
+      <div class="stat"><div class="stat-num">₹3,000</div><div class="stat-label">Budget/Person</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK INFO BAR -->
+<div class="info-bar">
+  <div class="info-bar-inner">
+    <div class="info-item">
+      <div class="info-icon"><i class="fa-solid fa-sun"></i></div>
+      <div><div class="info-label">Climate</div><div class="info-val">Semi-Arid</div></div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="fa-solid fa-language"></i></div>
+      <div><div class="info-label">Language</div><div class="info-val">Hindi, English</div></div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+      <div><div class="info-label">Currency</div><div class="info-val">INR (₹)</div></div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+      <div><div class="info-label">Time Zone</div><div class="info-val">IST (UTC+5:30)</div></div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="fa-solid fa-plane-arrival"></i></div>
+      <div><div class="info-label">Nearest Airport</div><div class="info-val">IGI Airport (DEL)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrap">
+
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+
+    <!-- ABOUT DELHI -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon"><i class="fa-solid fa-city"></i></div>
+        <h2>About New Delhi</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          <strong>New Delhi</strong> is the capital territory of India, a sprawling megalopolis of over 32 million people that seamlessly blends ancient heritage with futuristic modernity. Serving as the seat of the Indian government since 1911, this dynamic city occupies the heart of the Indo-Gangetic plain along the banks of the Yamuna River.
+        </p>
+        <p>
+          Delhi's history stretches back over 5,000 years — it has been the capital of successive empires including the <strong>Mauryas, Tughlaqs, Mughals, and the British Raj</strong>. This rich layered past means the city is a living museum, where 17th-century Mughal forts, British Raj-era boulevards, and gleaming 21st-century malls all coexist within minutes of each other.
+        </p>
+        <p>
+          The city is broadly divided into <strong>Old Delhi</strong> — the medieval walled city with its labyrinthine lanes, bazaars, and Mughal monuments — and <strong>New Delhi</strong>, the planned colonial capital designed by Edwin Lutyens with wide tree-lined avenues, grand government buildings, and diplomatic enclaves. Together they form one of the world's most historically layered and culturally vibrant urban landscapes.
+        </p>
+        <p>
+          As India's gastronomic capital, Delhi is equally celebrated for its food culture — from the legendary street food lanes of <strong>Chandni Chowk</strong> serving chole bhature, parathas, and kebabs, to the fine dining restaurants of Connaught Place dishing out global cuisine. Delhi truly offers something extraordinary for every traveller.
+        </p>
+      </div>
+    </div>
+
+    <!-- MUST-SEE HIGHLIGHTS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon"><i class="fa-solid fa-landmark"></i></div>
+        <h2>Must-See Attractions</h2>
+      </div>
+      <div class="hl-grid">
+        <div class="hl-card">
+          <span class="hl-emoji">🏯</span>
+          <h4>Red Fort (Lal Qila)</h4>
+          <p>UNESCO World Heritage Site. Built by Mughal Emperor Shah Jahan in 1638, this red sandstone citadel was the main residence of Mughal emperors for nearly 200 years. Explore its stunning halls, museums, and the iconic Lahori Gate.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">🏛️</span>
+          <h4>India Gate</h4>
+          <p>A 42-metre war memorial dedicated to 84,000 soldiers of the British Indian Army. The eternal Amar Jawan Jyoti flame burns beneath its arch. The surrounding Rajpath boulevard is the venue for Republic Day parades.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">🕌</span>
+          <h4>Jama Masjid</h4>
+          <p>India's largest mosque, built by Shah Jahan between 1644–1656. The mosque can hold up to 25,000 worshippers and offers panoramic views of Old Delhi from its minarets. A masterpiece of Mughal architecture.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">⚰️</span>
+          <h4>Humayun's Tomb</h4>
+          <p>The magnificent mausoleum of the second Mughal Emperor Humayun, built in 1570. Considered the forerunner of the Taj Mahal, this UNESCO site pioneered the concept of the "charbagh" — formal Persian garden design.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">🛕</span>
+          <h4>Akshardham Temple</h4>
+          <p>A breathtaking modern Hindu temple complex spanning 100 acres. Features intricate stone carvings, boat rides, a musical fountain show, and exhibitions on Indian culture and spirituality. A true architectural marvel.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">⚙️</span>
+          <h4>Qutub Minar</h4>
+          <p>The world's tallest brick minaret at 72.5 metres, built in 1193 CE. This UNESCO World Heritage Site is one of the earliest examples of Afghan architecture in India and is surrounded by medieval ruins and the mysterious Iron Pillar.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">🛍️</span>
+          <h4>Chandni Chowk</h4>
+          <p>One of the oldest and busiest markets in India. A sensory overload of colour, aroma, and flavour. Explore spice markets, textile shops, jewellery bazaars, and taste some of the world's best street food all in one lane.</p>
+        </div>
+        <div class="hl-card">
+          <span class="hl-emoji">🌸</span>
+          <h4>Lodhi Garden</h4>
+          <p>A 90-acre public park dotted with 15th-century Lodi dynasty tombs amid manicured gardens. A peaceful urban escape beloved by Delhiites for morning walks, jogging, and weekend picnics amidst Mughal-era architecture.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOD & CUISINE -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon"><i class="fa-solid fa-utensils"></i></div>
+        <h2>Food & Cuisine</h2>
+      </div>
+      <div class="section-body">
+        <p>Delhi is a food lover's paradise. The city's cuisine reflects centuries of Mughal influence blended with Punjabi heartiness and street-food innovation. Whether it's the parathas of Paranthe Wali Gali, the kebabs of Karim's, or the chaat of Chandni Chowk — every bite tells a story.</p>
+      </div>
+      <br/>
+      <div class="food-grid">
+        <div class="food-item"><span class="emoji">🥘</span><h5>Butter Chicken</h5><p>Iconic Dilli ka murgh makhani — creamy, rich, and smoky</p></div>
+        <div class="food-item"><span class="emoji">🫓</span><h5>Chole Bhature</h5><p>Fluffy fried bread with spiced chickpea curry</p></div>
+        <div class="food-item"><span class="emoji">🥗</span><h5>Dahi Bhalle</h5><p>Lentil dumplings in yogurt with tamarind chutney</p></div>
+        <div class="food-item"><span class="emoji">🍢</span><h5>Seekh Kebab</h5><p>Mughal-style minced meat kebabs from Karim's</p></div>
+        <div class="food-item"><span class="emoji">🥞</span><h5>Aloo Paratha</h5><p>Stuffed wheat flatbread from Paranthe Wali Gali</p></div>
+        <div class="food-item"><span class="emoji">🍛</span><h5>Nihari</h5><p>Slow-cooked mutton stew, a breakfast tradition</p></div>
+      </div>
+      <br/>
+      <div class="section-body">
+        <p><strong>Top Food Streets:</strong> Chandni Chowk, Paranthe Wali Gali, Karim's (Old Delhi), Connaught Place food courts, and Khan Market for global cuisine.</p>
+      </div>
+    </div>
+
+    <!-- BEST TIME TO VISIT -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon"><i class="fa-solid fa-calendar-days"></i></div>
+        <h2>Best Time to Visit</h2>
+      </div>
+      <div class="season-grid">
+        <div class="season-card best">
+          <span class="season-emoji">🍂</span>
+          <h5>Oct – Nov</h5>
+          <p>Cool evenings, festive season. Diwali celebrations!</p>
+          <span class="season-badge">Best</span>
+        </div>
+        <div class="season-card best">
+          <span class="season-emoji">❄️</span>
+          <h5>Dec – Feb</h5>
+          <p>Pleasant winters, 8–20°C. Perfect for sightseeing.</p>
+          <span class="season-badge">Best</span>
+        </div>
+        <div class="season-card ok">
+          <span class="season-emoji">🌸</span>
+          <h5>Mar – Apr</h5>
+          <p>Spring bloom, moderate temps before heat sets in.</p>
+          <span class="season-badge">Okay</span>
+        </div>
+        <div class="season-card avoid">
+          <span class="season-emoji">☀️</span>
+          <h5>May – Sep</h5>
+          <p>Extreme heat (45°C+) and monsoon humidity.</p>
+          <span class="season-badge">Avoid</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAVEL TIPS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon"><i class="fa-solid fa-lightbulb"></i></div>
+        <h2>Travel Tips</h2>
+      </div>
+      <ul class="tips-list">
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-metro"></i></div>
+          <p><strong>Use the Delhi Metro:</strong> It's the fastest, cheapest, and most comfortable way to get around. Covers all major tourist spots. A tourist day pass costs just ₹200.</p>
+        </li>
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <p><strong>Stay Safe:</strong> Keep your belongings secure in crowded markets. Use authorised prepaid taxis or Ola/Uber for rides. Avoid unmarked autos late at night.</p>
+        </li>
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-bottle-water"></i></div>
+          <p><strong>Stay Hydrated:</strong> Delhi summers are brutal. Carry a reusable water bottle and drink only sealed/filtered water. Tender coconut water is your best friend.</p>
+        </li>
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-shirt"></i></div>
+          <p><strong>Dress Modestly:</strong> When visiting mosques and temples, cover your shoulders and knees. Remove footwear before entering religious sites.</p>
+        </li>
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+          <p><strong>Bargain at Markets:</strong> At local bazaars like Chandni Chowk and Sarojini Nagar, always negotiate. Starting price is often 2–3x the fair value.</p>
+        </li>
+        <li>
+          <div class="tip-icon"><i class="fa-solid fa-wind"></i></div>
+          <p><strong>Air Quality:</strong> Delhi's AQI can be poor Nov–Jan due to crop burning. Consider an N95 mask. Check AQI on apps like IQAir before outdoor excursions.</p>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Budget Card -->
+    <div class="budget-card">
+      <h3>Budget per Person</h3>
+      <div class="budget-price">₹3,000 <span>/ person</span></div>
+      <p style="font-size:0.78rem;opacity:0.7;margin-bottom:4px;">Estimated for a comfortable 3-day trip</p>
+      <div class="budget-divider"></div>
+      <div class="budget-row"><span class="budget-label">🏨 Accommodation (3 nights)</span><span class="budget-amount">₹1,200</span></div>
+      <div class="budget-row"><span class="budget-label">🍽️ Food & Dining</span><span class="budget-amount">₹600</span></div>
+      <div class="budget-row"><span class="budget-label">🎟️ Entry Tickets</span><span class="budget-amount">₹400</span></div>
+      <div class="budget-row"><span class="budget-label">🚇 Transport (Metro)</span><span class="budget-amount">₹300</span></div>
+      <div class="budget-row"><span class="budget-label">🛍️ Shopping & Misc</span><span class="budget-amount">₹500</span></div>
+      <div class="budget-divider"></div>
+      <div class="budget-row"><span class="budget-label" style="font-weight:700;opacity:1;">Total Estimate</span><span class="budget-amount" style="font-size:1.1rem;">₹3,000</span></div>
+      <a class="book-btn" href="#">📅 Plan My Trip</a>
+    </div>
+
+    <!-- Transport -->
+    <div class="sidebar-card">
+      <h4><i class="fa-solid fa-route"></i> Getting Around</h4>
+      <div class="transport-item">
+        <div class="transport-icon"><i class="fa-solid fa-train-subway"></i></div>
+        <div class="transport-info">
+          <div class="transport-name">Delhi Metro</div>
+          <div class="transport-desc">Best for all tourist areas</div>
+        </div>
+        <div class="transport-cost">₹10–60</div>
+      </div>
+      <div class="transport-item">
+        <div class="transport-icon"><i class="fa-solid fa-car"></i></div>
+        <div class="transport-info">
+          <div class="transport-name">Ola / Uber</div>
+          <div class="transport-desc">Comfortable & safe</div>
+        </div>
+        <div class="transport-cost">₹80–300</div>
+      </div>
+      <div class="transport-item">
+        <div class="transport-icon"><i class="fa-solid fa-motorcycle"></i></div>
+        <div class="transport-info">
+          <div class="transport-name">Auto Rickshaw</div>
+          <div class="transport-desc">Short distances, bargain first</div>
+        </div>
+        <div class="transport-cost">₹30–150</div>
+      </div>
+      <div class="transport-item">
+        <div class="transport-icon"><i class="fa-solid fa-bus"></i></div>
+        <div class="transport-info">
+          <div class="transport-name">DTC Bus</div>
+          <div class="transport-desc">Very economical option</div>
+        </div>
+        <div class="transport-cost">₹5–25</div>
+      </div>
+    </div>
+
+    <!-- Nearby Places -->
+    <div class="sidebar-card">
+      <h4><i class="fa-solid fa-map-location-dot"></i> Nearby Day Trips</h4>
+      <div class="nearby-item">
+        <div><div class="nearby-name">🕌 Agra (Taj Mahal)</div><div class="nearby-dist">~200 km · 3 hrs by Shatabdi</div></div>
+      </div>
+      <div class="nearby-item">
+        <div><div class="nearby-name">🏰 Jaipur (Pink City)</div><div class="nearby-dist">~280 km · 5 hrs by road</div></div>
+      </div>
+      <div class="nearby-item">
+        <div><div class="nearby-name">⛰️ Rishikesh</div><div class="nearby-dist">~240 km · 5 hrs by road</div></div>
+      </div>
+      <div class="nearby-item">
+        <div><div class="nearby-name">🏔️ Nainital</div><div class="nearby-dist">~310 km · 6 hrs by road</div></div>
+      </div>
+      <div class="nearby-item">
+        <div><div class="nearby-name">🗺️ Mathura – Vrindavan</div><div class="nearby-dist">~145 km · 2.5 hrs by road</div></div>
+      </div>
+    </div>
+
+    <!-- Emergency Info -->
+    <div class="sidebar-card">
+      <h4><i class="fa-solid fa-phone-volume"></i> Emergency Numbers</h4>
+      <div class="transport-item">
+        <div class="transport-icon" style="background:#fff0f0;color:#dc2626;"><i class="fa-solid fa-truck-medical"></i></div>
+        <div class="transport-info"><div class="transport-name">Ambulance</div><div class="transport-desc">Medical Emergency</div></div>
+        <div class="transport-cost" style="color:#dc2626;">108</div>
+      </div>
+      <div class="transport-item">
+        <div class="transport-icon" style="background:#f0f5ff;color:#1a8fe3;"><i class="fa-solid fa-shield"></i></div>
+        <div class="transport-info"><div class="transport-name">Police</div><div class="transport-desc">Law & Safety</div></div>
+        <div class="transport-cost" style="color:#1a8fe3;">100</div>
+      </div>
+      <div class="transport-item">
+        <div class="transport-icon" style="background:#fff8f0;color:#ff6b35;"><i class="fa-solid fa-fire-extinguisher"></i></div>
+        <div class="transport-info"><div class="transport-name">Fire Brigade</div><div class="transport-desc">Fire Emergency</div></div>
+        <div class="transport-cost" style="color:#ff6b35;">101</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHOTO GALLERY -->
+<div class="gallery-section">
+  <h2>📸 Delhi Through Our Lens</h2>
+  <div class="gallery-grid">
+    <img src="delhi_redfort.jpg" alt="Red Fort, Delhi" title="Red Fort – Lal Qila" />
+    <img src="delhi_indiagate.jpg" alt="India Gate, Delhi" title="India Gate at sunset" />
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>✈ <strong>Breeze-Trip</strong> · <a href="index.html">Back to Home</a> · Explore · Relax · Discover</p>
+  <p style="margin-top:8px;font-size:0.75rem;opacity:0.5;">© 2026 Breeze-Trip. All rights reserved.</p>
+</footer>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script>
+  const st = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    st.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  });
+</script>
+</body>
+</html>

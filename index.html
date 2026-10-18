@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breeze-Trip | Explore India</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #183b4d;
+      --secondary: #c86a3d;
+      --accent: #e7b36a;
+      --dark: #11242f;
+      --light: #f5efe7;
+      --card-bg: #ffffff;
+      --text-main: #1d2d35;
+      --text-sub: #62707a;
+      --gradient: linear-gradient(135deg, #183b4d 0%, #345d6b 40%, #c86a3d 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5faff;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 48px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(26,143,227,0.12);
+      box-shadow: 0 2px 20px rgba(26,143,227,0.08);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-brand .nav-logo-icon {
+      font-size: 1.8rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-brand .brand-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #183b4d 0%, #c86a3d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-sub);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    .nav-btn {
+      background: var(--gradient);
+      color: #fff !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      font-size: 0.78rem !important;
+      line-height: 1.2;
+      white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(74, 16, 22, 0.38) !important; color: #fff !important; }
+
+    .auth-dialog {
+      width: min(440px, calc(100vw - 32px));
+      max-width: none;
+      max-height: calc(100vh - 32px);
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      color: var(--text-main);
+      box-shadow: 0 24px 80px rgba(5, 24, 33, 0.34);
+    }
+
+    .auth-dialog::backdrop {
+      background: rgba(10, 25, 32, 0.62);
+      backdrop-filter: blur(4px);
+    }
+
+    .auth-panel { position: relative; padding: 36px; }
+
+    .auth-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: #f1f4f4;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .auth-eyebrow {
+      margin-bottom: 8px;
+      color: var(--secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+    }
+
+    .auth-title { margin-bottom: 8px; color: var(--primary); font-size: 1.55rem; }
+
+    .auth-copy {
+      margin-bottom: 22px;
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .auth-options { display: grid; gap: 10px; }
+
+    .auth-option,
+    .auth-primary,
+    .auth-back {
+      min-height: 46px;
+      border-radius: 5px;
+      font: 600 0.9rem 'Poppins', sans-serif;
+      cursor: pointer;
+    }
+
+    .auth-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid #d9e0e2;
+      background: #fff;
+      color: var(--text-main);
+    }
+
+    .auth-option:hover { border-color: var(--primary); background: #f7faf9; }
+    .auth-option .fa-google { color: #4285f4; }
+    .auth-option .fa-mobile-screen-button { color: var(--primary); }
+
+    .auth-phone-form { display: grid; gap: 12px; }
+
+    .auth-phone-form label {
+      color: var(--text-main);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .auth-phone-input {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      min-height: 46px;
+      border: 1px solid #cdd8da;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .auth-phone-input span {
+      display: grid;
+      place-items: center;
+      background: #f1f4f4;
+      color: var(--text-sub);
+      font-size: 0.9rem;
+    }
+
+    .auth-phone-input input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      padding: 0 12px;
+      font: 400 0.9rem 'Poppins', sans-serif;
+    }
+
+    .auth-primary { border: 0; background: var(--gradient); color: #fff; }
+    .auth-back { border: 0; background: transparent; color: var(--primary); }
+
+    .auth-status {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--secondary);
+      background: #f7f3ee;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .auth-config-note {
+      margin-top: 18px;
+      color: var(--text-sub);
+      font-size: 0.72rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #102a36 0%, #1d3d4f 35%, #295d67 60%, #c86a3d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900'%3E%3Ccircle cx='200' cy='200' r='300' fill='rgba(231,179,106,0.08)'/%3E%3Ccircle cx='1300' cy='700' r='250' fill='rgba(200,106,61,0.14)'/%3E%3Ccircle cx='900' cy='100' r='200' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") center/cover no-repeat;
+      pointer-events: none;
+    }
+
+    .floating-icons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .fi {
+      position: absolute;
+      font-size: 1.6rem;
+      opacity: 0.15;
+      animation: floatIcon 6s ease-in-out infinite;
+    }
+
+    .fi:nth-child(1) { top: 15%; left: 8%;  animation-delay: 0s; }
+    .fi:nth-child(2) { top: 70%; left: 5%;  animation-delay: 1s; }
+    .fi:nth-child(3) { top: 20%; right: 8%; animation-delay: 2s; }
+    .fi:nth-child(4) { top: 75%; right: 6%; animation-delay: 0.5s; }
+    .fi:nth-child(5) { top: 45%; left: 3%;  animation-delay: 1.5s; }
+    .fi:nth-child(6) { top: 40%; right: 4%; animation-delay: 2.5s; }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* Logo area */
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .logo-area img {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(14,205,161,0.4));
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+
+    .logo-svg {
+      width: min(500px, 60vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 14px 30px rgba(122, 31, 42, 0.26));
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+
+    .nav-brand-mark {
+      width: 48px;
+      height: 42px;
+      display: block;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { filter: drop-shadow(0 8px 24px rgba(212,175,109,0.25)); }
+      50% { filter: drop-shadow(0 12px 36px rgba(122, 31, 42, 0.45)); }
+    }
+
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .site-title span {
+      background: linear-gradient(135deg, #f4d7a7, #e7b36a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .site-tagline {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    /* Search Box */
+    .search-wrapper {
+      width: 100%;
+      max-width: 700px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: auto;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid rgba(122, 31, 42, 0.18);
+      border-radius: 20px;
+      box-shadow: 0 24px 50px rgba(8, 54, 79, 0.18);
+      padding: 12px;
+      display: none;
+      z-index: 50;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .search-suggestions.show {
+      display: grid;
+      gap: 8px;
+    }
+
+    .search-suggestion-item {
+      border: none;
+      background: rgba(26, 143, 227, 0.04);
+      color: var(--text-main);
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .search-suggestion-item:hover {
+      background: linear-gradient(135deg, rgba(26,143,227,0.08), rgba(14,205,161,0.12));
+      transform: translateX(2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.97);
+      border-radius: 60px;
+      padding: 8px 8px 8px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(14,205,161,0.3);
+      transition: box-shadow 0.3s;
+    }
+
+    .search-box:focus-within {
+      box-shadow: 0 24px 70px rgba(0,0,0,0.3), 0 0 0 3px rgba(14,205,161,0.5);
+    }
+
+    .search-icon { color: var(--primary); font-size: 1.1rem; margin-right: 12px; }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      color: var(--text-main);
+      background: transparent;
+      padding: 6px 0;
+    }
+
+    .search-box input::placeholder { color: #aab; }
+
+    .search-btn {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-btn:hover { transform: scale(1.04); box-shadow: 0 8px 24px rgba(14,205,161,0.4); }
+
+    .search-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .tag {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.85);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tag:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+    /* ── DIVIDER ── */
+    .divider-section {
+      padding: 0 48px;
+      margin-top: 70px;
+    }
+
+    .fancy-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #1a8fe3 40%, #0ecda1 60%, transparent);
+      border-radius: 2px;
+    }
+
+    .divider-icon {
+      font-size: 1.4rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── WELCOME SECTION ── */
+    .welcome-section {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .welcome-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .welcome-section h2 em {
+      font-style: normal;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-section p {
+      color: var(--text-sub);
+      font-size: 1rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── QUICK LINKS / 3 BOXES ── */
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+      max-width: 1000px;
+      margin: 48px auto 0;
+      padding: 0 24px;
+    }
+
+    .ql-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(26,143,227,0.1);
+      border: 1px solid rgba(26,143,227,0.08);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: visible;
+      text-decoration: none;
+      display: block;
+    }
+
+    .ql-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .ql-card:nth-child(1)::before { background: linear-gradient(90deg, #1a8fe3, #0ecda1); }
+    .ql-card:nth-child(2)::before { background: linear-gradient(90deg, #ff6b35, #f7c948); }
+    .ql-card:nth-child(3)::before { background: linear-gradient(90deg, #a855f7, #ec4899); }
+
+    .ql-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(26,143,227,0.18);
+    }
+
+    .ql-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 20px;
+    }
+
+    .ql-card:nth-child(1) .ql-icon { background: linear-gradient(135deg, #e0f2ff, #b3e5fc); color: #1a8fe3; }
+    .ql-card:nth-child(2) .ql-icon { background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ff6b35; }
+    .ql-card:nth-child(3) .ql-icon { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #a855f7; }
+
+    .ql-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .ql-card p {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    .ql-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+      transition: gap 0.2s;
+    }
+
+    .ql-card:nth-child(2) .ql-arrow { color: #ff6b35; }
+    .ql-card:nth-child(3) .ql-arrow { color: #a855f7; }
+
+    .ql-card:hover .ql-arrow { gap: 10px; }
+
+    /* ── SECTION TITLE ── */
+    .section-title-wrap {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .section-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(26,143,227,0.1), rgba(14,205,161,0.1));
+      border: 1px solid rgba(26,143,227,0.2);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .section-title-wrap h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--text-main);
+    }
+
+    .section-title-wrap h2 span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-title-wrap p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-top: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── PLACES GRID ── */
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .place-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      transition: transform 0.35s, box-shadow 0.35s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .place-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.15);
+    }
+
+    .place-img {
+      height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .place-img-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      transition: transform 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .place-img-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .place-card:hover .place-img-inner { transform: scale(1.1); }
+
+    .highlight-card {
+      box-shadow: 0 0 0 3px rgba(14,205,161,0.35), 0 24px 60px rgba(14,205,161,0.25);
+      transform: translateY(-4px);
+    }
+
+    .varanasi   .place-img-inner { background: linear-gradient(135deg, #ff9a56, #ff6b35); }
+    .delhi      .place-img-inner { background: linear-gradient(135deg, #e85d04, #dc2626); }
+    .agra       .place-img-inner { background: linear-gradient(135deg, #f472b6, #9333ea); }
+    .jk         .place-img-inner { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+    .shillong   .place-img-inner { background: linear-gradient(135deg, #4ade80, #16a34a); }
+    .nainital   .place-img-inner { background: linear-gradient(135deg, #60a5fa, #1d4ed8); }
+    .goa        .place-img-inner { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+    .jaipur     .place-img-inner { background: linear-gradient(135deg, #fb923c, #ea580c); }
+    .kerala     .place-img-inner { background: linear-gradient(135deg, #34d399, #059669); }
+
+    .place-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(255,255,255,0.92);
+      color: var(--primary);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .place-badge.hot { color: #ff6b35; }
+    .place-badge.trending { color: #a855f7; }
+
+    .place-rating {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(0,0,0,0.55);
+      color: #fbbf24;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      backdrop-filter: blur(8px);
+    }
+
+    .place-body {
+      padding: 22px 22px 18px;
+    }
+
+    .place-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .place-location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    .place-location i { color: var(--primary); font-size: 0.75rem; }
+
+    .place-body p {
+      font-size: 0.84rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .place-tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .ptag {
+      background: var(--light);
+      color: var(--primary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .place-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .place-price {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+    }
+
+    .place-price strong {
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .explore-btn {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .explore-btn:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(14,205,161,0.4); }
+
+    .about-section {
+      scroll-margin-top: 88px;
+      padding: 56px 24px;
+      background: #fff;
+      border-top: 1px solid rgba(24, 59, 77, 0.1);
+    }
+
+    .about-inner {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .about-eyebrow {
+      color: var(--secondary);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+
+    .about-section h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .about-description {
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+
+    .about-founder {
+      border-left: 2px solid var(--secondary);
+      padding: 6px 0 6px 20px;
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      align-items: center;
+      gap: 16px;
+    }
+
+    .about-founder-photo {
+      width: 112px;
+      aspect-ratio: 1;
+      object-fit: cover;
+      object-position: center 32%;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .about-founder-info {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .about-founder span {
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .about-founder strong {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .about-details {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 6px 12px;
+      margin-top: 12px;
+      font-size: 0.82rem;
+    }
+
+    .about-details dt {
+      color: var(--text-sub);
+    }
+
+    .about-details dd {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 36px 20px;
+      font-size: 0.875rem;
+    }
+
+    footer .footer-brand {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    footer p { margin-top: 6px; }
+
+    footer .social-links {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    footer .social-links a {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    footer .social-links a:hover { background: var(--primary); color: #fff; }
+
+    #scrollTop {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 46px;
+      height: 46px;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(26,143,227,0.4);
+      z-index: 999;
+      transition: transform 0.2s;
+    }
+
+    #scrollTop:hover { transform: translateY(-3px); }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .nav-brand .brand-name { font-size: 1.1rem; }
+      .nav-brand-mark { width: 38px; height: 38px; }
+      .nav-btn { padding: 5px 10px; font-size: 0.72rem !important; }
+      .divider-section { padding: 0 24px; }
+      .site-title { font-size: 2rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 24px; }
+      .about-section h2 { font-size: 1.5rem; }
+      .auth-panel { padding: 32px 24px 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-brand" href="#">
+    <img class="nav-brand-mark" src="breeze-trip-symbol.png" alt="" />
+    <span class="brand-name">Breeze-Trip</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#places">Destinations</a></li>
+    <li><a href="#budget-section">Budget Plans</a></li>
+    <li><a href="#must-section">Must Go</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#" class="nav-btn" id="sign-in-trigger" aria-haspopup="dialog" aria-controls="auth-dialog">Sign In</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="floating-icons">
+    <span class="fi"><i class="fa-solid fa-plane"></i></span>
+    <span class="fi"><i class="fa-solid fa-map-location-dot"></i></span>
+    <span class="fi"><i class="fa-solid fa-mountain-sun"></i></span>
+    <span class="fi"><i class="fa-solid fa-umbrella-beach"></i></span>
+    <span class="fi"><i class="fa-solid fa-compass"></i></span>
+    <span class="fi"><i class="fa-solid fa-camera"></i></span>
+  </div>
+
+  <!-- Logo & Site Name -->
+  <div class="logo-area">
+    <svg class="logo-svg" viewBox="0 0 1200 420" role="img" aria-label="Breeze-Trip logo">
+      <image href="breeze-trip-symbol.png" x="24" y="57" width="376" height="328" preserveAspectRatio="xMidYMid meet" />
+
+      <g font-family="'Poppins', sans-serif" font-weight="800" letter-spacing="-3">
+        <text x="430" y="210" font-size="94"><tspan fill="#38b9c8">BREEZE-</tspan><tspan fill="#e8f6f4">TRIP</tspan></text>
+      </g>
+      <g fill="#e8f6f4" font-family="'Poppins', sans-serif" font-weight="700" letter-spacing="2">
+        <text x="470" y="285" font-size="38">THINK - SURF - PLAN - GOOOOO !!</text>
+      </g>
+    </svg>
+    <h1 class="site-title" style="display:none;">Breeze<span>-Trip</span></h1>
+    <p class="site-tagline" style="display:none;">✦ Explore · Relax · Discover ✦</p>
+  </div>
+
+  <!-- Search Box -->
+  <div class="search-wrapper">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input id="search-input" type="text" placeholder="Search destinations, cities, experiences…" />
+      <button class="search-btn">
+        <i class="fa-solid fa-paper-plane"></i> Search
+      </button>
+    </div>
+    <div id="city-suggestions" class="search-suggestions" aria-live="polite"></div>
+    <div class="search-tags">
+      <button type="button" class="tag" data-category="Hill Stations">🏔️ Hill Stations</button>
+      <button type="button" class="tag" data-category="Beaches">🏖️ Beaches</button>
+      <button type="button" class="tag" data-category="Heritage">🕌 Heritage</button>
+      <button type="button" class="tag" data-category="Nature">🌿 Nature</button>
+      <button type="button" class="tag" data-category="Culture">🎭 Culture</button>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-section">
+  <div class="fancy-divider">
+    <div class="divider-line"></div>
+    <span class="divider-icon"><i class="fa-solid fa-compass"></i></span>
+    <div class="divider-line"></div>
+  </div>
+</div>
+
+<!-- WELCOME + 3 BOXES -->
+<section id="budget-section">
+  <div class="welcome-section">
+    <h2>Welcome, <em>Make your plans today</em></h2>
+    <p>Your perfect journey is just a click away. Plan smarter, travel better, explore India like never before.</p>
+  </div>
+
+  <div class="quick-links">
+    <!-- Box 1: Budget Plan -->
+    <a href="#" class="ql-card">
+      <div class="ql-icon"><i class="fa-solid fa-wallet"></i></div>
+      <h3>BUDGET PLAN</h3>
+      <p>Plan your dream trip without breaking the bank. Get personalized budgets, cost breakdowns, and money-saving tips.</p>
+      <div class="ql-arrow">Explore Plans <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <!-- Box 2: About Location -->
+    <a href="#places" class="ql-card">
+      <div class="ql-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+      <h3>ABOUT LOCATION</h3>
+      <p>Discover detailed guides about top destinations — culture, cuisine, local tips, climate, and best time to visit.</p>
+      <div class="ql-arrow">Discover More <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <!-- Box 3: Must Go Places -->
+    <a href="#must-section" class="ql-card" id="must-section">
+      <div class="ql-icon"><i class="fa-solid fa-star"></i></div>
+      <h3>MUST GO PLACES</h3>
+      <p>Hand-picked bucket-list destinations that every traveller must experience at least once in their lifetime.</p>
+      <div class="ql-arrow">See Picks <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+  </div>
+</section>
+
+<!-- RECOMMENDED PLACES -->
+<section id="places">
+  <div class="section-title-wrap">
+    <span class="section-badge">✦ Recommended Destinations</span>
+    <h2>Explore <span>Incredible India</span></h2>
+    <p>From snow-capped peaks to golden beaches — discover the breathtaking diversity of India's finest destinations.</p>
+  </div>
+
+  <div class="places-grid">
+
+    <div class="place-card varanasi">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=900&q=80" alt="Varanasi ghats" loading="lazy" />
+        </div>
+        <span class="place-badge hot">🔥 Hot</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.9</span>
+      </div>
+      <div class="place-body">
+        <h3>Varanasi</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Uttar Pradesh</div>
+        <p>Experience the spiritual soul of India with sunrise boat rides on the Ganga, glowing aarti rituals, and timeless alleys filled with prayer, music, and tradition.</p>
+        <div class="place-tags">
+          <span class="ptag">Spiritual</span><span class="ptag">Heritage</span><span class="ptag">Ghats</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;8,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card delhi" onclick="window.location.href='delhi.html'" style="cursor:pointer;">
+      <div class="place-img">
+        <div class="place-img-inner" style="position:relative;overflow:hidden;">
+          <img src="delhi_redfort.jpg" alt="Delhi Red Fort" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'" />
+        </div>
+        <span class="place-badge trending">📈 Trending</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.7</span>
+      </div>
+      <div class="place-body">
+        <h3>New Delhi</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Delhi NCR</div>
+        <p>India's vibrant capital blends Mughal heritage, political grandeur, and bustling street life — perfect for heritage walks, food trails, and sunset monuments.</p>
+        <div class="place-tags">
+          <span class="ptag">Historical</span><span class="ptag">Monuments</span><span class="ptag">Food</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;3,000</strong>/person</div>
+          <button class="explore-btn" onclick="event.stopPropagation();window.location.href='delhi.html'">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card agra">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80" alt="Taj Mahal Agra" loading="lazy" />
+        </div>
+        <span class="place-badge">🌟 Must See</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.8</span>
+      </div>
+      <div class="place-body">
+        <h3>Agra</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Uttar Pradesh</div>
+        <p>Walk through Mughal splendor and witness the Taj Mahal at sunrise, framed by marble domes, gardens, and timeless romantic architecture.</p>
+        <div class="place-tags">
+          <span class="ptag">Taj Mahal</span><span class="ptag">UNESCO</span><span class="ptag">Mughal</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;7,500</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card jk">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" alt="Kashmir valley" loading="lazy" />
+        </div>
+        <span class="place-badge hot">🔥 Hot</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.9</span>
+      </div>
+      <div class="place-body">
+        <h3>Jammu &amp; Kashmir</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Northern India</div>
+        <p>From the floating charm of Dal Lake to snowy vistas in Gulmarg and serene valleys, this region is pure Himalayan beauty and peace.</p>
+        <div class="place-tags">
+          <span class="ptag">Scenic</span><span class="ptag">Snow</span><span class="ptag">Valleys</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;15,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card shillong">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=900&q=80" alt="Shillong hill station" loading="lazy" />
+        </div>
+        <span class="place-badge trending">📈 Trending</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.6</span>
+      </div>
+      <div class="place-body">
+        <h3>Shillong</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Meghalaya</div>
+        <p>Known as the Scotland of the East, Shillong charms travelers with mist-covered hills, rain-soaked valleys, coffee shops, and lively local culture.</p>
+        <div class="place-tags">
+          <span class="ptag">Hill Station</span><span class="ptag">Nature</span><span class="ptag">Waterfalls</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;12,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card nainital">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80" alt="Nainital Lake" loading="lazy" />
+        </div>
+        <span class="place-badge">🌟 Popular</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.7</span>
+      </div>
+      <div class="place-body">
+        <h3>Nainital</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Uttarakhand</div>
+        <p>Set around a shimmering lake and ringed by Himalayan peaks, Nainital is ideal for boating, viewpoints, and calm mountain afternoons.</p>
+        <div class="place-tags">
+          <span class="ptag">Lake City</span><span class="ptag">Mountains</span><span class="ptag">Boating</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;9,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card goa">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80" alt="Goa beach" loading="lazy" />
+        </div>
+        <span class="place-badge hot">🔥 Hot</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.8</span>
+      </div>
+      <div class="place-body">
+        <h3>Goa</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Western India</div>
+        <p>Relax on sun-kissed beaches, enjoy seafood feasts, and explore old Portuguese streets with a vibrant mix of nightlife and laid-back coastal charm.</p>
+        <div class="place-tags">
+          <span class="ptag">Beaches</span><span class="ptag">Party</span><span class="ptag">Seafood</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;10,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card jaipur">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=900&q=80" alt="Jaipur palaces" loading="lazy" />
+        </div>
+        <span class="place-badge trending">📈 Trending</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.7</span>
+      </div>
+      <div class="place-body">
+        <h3>Jaipur</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> Rajasthan</div>
+        <p>Known as the Pink City, Jaipur offers regal palaces, forts, artisan bazaars, and royal hospitality wrapped in warm desert colors.</p>
+        <div class="place-tags">
+          <span class="ptag">Palaces</span><span class="ptag">Forts</span><span class="ptag">Royalty</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;8,500</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="place-card kerala">
+      <div class="place-img">
+        <div class="place-img-inner">
+          <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80" alt="Kerala backwaters" loading="lazy" />
+        </div>
+        <span class="place-badge">🌟 Must See</span>
+        <span class="place-rating"><i class="fa-solid fa-star"></i> 4.9</span>
+      </div>
+      <div class="place-body">
+        <h3>Kerala</h3>
+        <div class="place-location"><i class="fa-solid fa-location-dot"></i> South India</div>
+        <p>Drift through serene backwaters, stay in a traditional houseboat, and enjoy lush hills, tea gardens, and wellness experiences across the state.</p>
+        <div class="place-tags">
+          <span class="ptag">Backwaters</span><span class="ptag">Wellness</span><span class="ptag">Spices</span>
+        </div>
+        <div class="place-footer">
+          <div class="place-price">From <strong>&#8377;13,000</strong>/person</div>
+          <button class="explore-btn">Explore</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <div>
+      <p class="about-eyebrow">ABOUT BREEZE-TRIP</p>
+      <h2 id="about-heading">Made for curious travelers</h2>
+      <p class="about-description">Discover destinations across India and plan your next outing with Breeze-Trip.</p>
+    </div>
+    <div class="about-founder">
+      <img class="about-founder-photo" src="founder-photo.jpg" alt="Akrisht Chaturvedi, founder of Breeze-Trip" />
+      <div class="about-founder-info">
+        <span>Founder</span>
+        <strong>AKRISHT CHATURVEDI</strong>
+        <dl class="about-details">
+          <dt>Age (2026)</dt><dd>18 years</dd>
+          <dt>Date of birth</dt><dd>30/06/2008</dd>
+          <dt>Nationality</dt><dd>Indian</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">&#9992; Breeze-Trip</div>
+  <div class="social-links">
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+  </div>
+  <p>Explore &middot; Relax &middot; Discover &mdash; Your journey begins here.</p>
+  <p style="margin-top:10px;font-size:0.78rem;opacity:0.5;">&copy; 2026 Breeze-Trip. Crafted with &#10084;&#65039; for wanderers.</p>
+</footer>
+
+<dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-title">
+  <div class="auth-panel">
+    <button class="auth-close" id="auth-close" type="button" aria-label="Close sign-in dialog">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <p class="auth-eyebrow">YOUR NEXT JOURNEY STARTS HERE</p>
+    <h2 class="auth-title" id="auth-title">Sign in to Breeze-Trip</h2>
+    <p class="auth-copy">Choose how you’d like to access your travel plans.</p>
+    <div class="auth-options" id="auth-options">
+      <button class="auth-option" id="google-sign-in" type="button">
+        <i class="fa-brands fa-google" aria-hidden="true"></i> Continue with Google
+      </button>
+      <button class="auth-option" id="phone-sign-in" type="button">
+        <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Continue with phone
+      </button>
+    </div>
+    <form class="auth-phone-form" id="phone-auth-form" hidden>
+      <label for="phone-number">Phone number</label>
+      <div class="auth-phone-input">
+        <span aria-hidden="true">+91</span>
+        <input id="phone-number" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" required />
+      </div>
+      <button class="auth-primary" type="submit">Continue</button>
+      <button class="auth-back" id="auth-back" type="button">Back to sign-in options</button>
+    </form>
+    <p class="auth-status" id="auth-status" role="status" aria-live="polite" hidden></p>
+    <p class="auth-config-note">Google sign-in and phone verification need authentication setup before accounts can be created.</p>
+  </div>
+</dialog>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<script>
+  const scrollBtn = document.getElementById('scrollTop');
+  const authDialog = document.getElementById('auth-dialog');
+  const authOptions = document.getElementById('auth-options');
+  const phoneAuthForm = document.getElementById('phone-auth-form');
+  const authStatus = document.getElementById('auth-status');
+
+  document.getElementById('sign-in-trigger').addEventListener('click', (event) => {
+    event.preventDefault();
+    authOptions.hidden = false;
+    phoneAuthForm.hidden = true;
+    authStatus.hidden = true;
+    authDialog.showModal();
+  });
+
+  document.getElementById('auth-close').addEventListener('click', () => authDialog.close());
+
+  authDialog.addEventListener('click', (event) => {
+    const bounds = authDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      authDialog.close();
+    }
+  });
+
+  document.getElementById('google-sign-in').addEventListener('click', () => {
+    authStatus.textContent = 'Google sign-in is not connected yet. Configure Google Authentication to enable account access.';
+    authStatus.hidden = false;
+  });
+
+  document.getElementById('phone-sign-in').addEventListener('click', () => {
+    authOptions.hidden = true;
+    phoneAuthForm.hidden = false;
+    authStatus.hidden = true;
+    document.getElementById('phone-number').focus();
+  });
+
+  document.getElementById('auth-back').addEventListener('click', () => {
+    phoneAuthForm.hidden = true;
+    authOptions.hidden = false;
+    authStatus.hidden = true;
+  });
+
+  phoneAuthForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    authStatus.textContent = 'Phone verification is not connected yet. Configure an SMS authentication provider to send a secure sign-in code.';
+    authStatus.hidden = false;
+  });
+
+  window.addEventListener('scroll', () => {
+    scrollBtn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.place-card, .ql-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease, box-shadow 0.35s';
+    observer.observe(card);
+  });
+
+  const indiaCities = [
+    { name: 'Delhi', state: 'Delhi NCR', page: 'delhi.html' },
+    { name: 'Mumbai', state: 'Maharashtra' },
+    { name: 'Bengaluru', state: 'Karnataka' },
+    { name: 'Jaipur', state: 'Rajasthan' },
+    { name: 'Agra', state: 'Uttar Pradesh' },
+    { name: 'Varanasi', state: 'Uttar Pradesh' },
+    { name: 'Goa', state: 'Goa' },
+    { name: 'Kerala', state: 'Kerala' },
+    { name: 'Shimla', state: 'Himachal Pradesh' },
+    { name: 'Manali', state: 'Himachal Pradesh' },
+    { name: 'Nainital', state: 'Uttarakhand' },
+    { name: 'Srinagar', state: 'Jammu & Kashmir' },
+    { name: 'Udaipur', state: 'Rajasthan' },
+    { name: 'Kolkata', state: 'West Bengal' },
+    { name: 'Pune', state: 'Maharashtra' },
+    { name: 'Hyderabad', state: 'Telangana' },
+    { name: 'Chennai', state: 'Tamil Nadu' },
+    { name: 'Khajuraho', state: 'Madhya Pradesh' },
+    { name: 'Rishikesh', state: 'Uttarakhand' },
+    { name: 'Leh', state: 'Ladakh' },
+    { name: 'Shillong', state: 'Meghalaya' },
+    { name: 'Guwahati', state: 'Assam' },
+    { name: 'Munnar', state: 'Kerala' },
+    { name: 'Kochi', state: 'Kerala' },
+    { name: 'Ooty', state: 'Tamil Nadu' },
+    { name: 'Puducherry', state: 'Puducherry' },
+    { name: 'Puri', state: 'Odisha' },
+    { name: 'Gangtok', state: 'Sikkim' },
+    { name: 'Kaziranga', state: 'Assam' },
+    { name: 'Ahmedabad', state: 'Gujarat' },
+    { name: 'Lucknow', state: 'Uttar Pradesh' },
+    { name: 'Darjeeling', state: 'West Bengal' },
+    { name: 'Jodhpur', state: 'Rajasthan' },
+    { name: 'Amritsar', state: 'Punjab' }
+  ];
+
+  const searchInput = document.querySelector('.search-box input');
+  const citySuggestions = document.getElementById('city-suggestions');
+  const recommendationGroups = {
+    'Hill Stations': ['Nainital', 'Manali', 'Shimla', 'Darjeeling', 'Shillong', 'Munnar', 'Ooty'],
+    Beaches: ['Goa', 'Mumbai', 'Kochi', 'Chennai', 'Puducherry', 'Puri'],
+    Heritage: ['Varanasi', 'Jaipur', 'Amritsar', 'Chennai', 'Kochi'],
+    Nature: ['Guwahati', 'Kaziranga', 'Shillong', 'Gangtok', 'Darjeeling', 'Munnar'],
+    Culture: ['Varanasi', 'Jaipur', 'Chennai', 'Amritsar', 'Kochi']
+  };
+
+  function hideSuggestions() {
+    citySuggestions.classList.remove('show');
+  }
+
+  function showSuggestions() {
+    const wrapperRect = document.querySelector('.search-wrapper').getBoundingClientRect();
+    const searchBoxRect = document.querySelector('.search-box').getBoundingClientRect();
+    const spaceBelow = window.innerHeight - searchBoxRect.bottom - 16;
+    const spaceAbove = searchBoxRect.top - 16;
+    const openAbove = spaceBelow < 220 && spaceAbove > spaceBelow;
+    const availableSpace = openAbove ? spaceAbove : spaceBelow;
+    const maxHeight = Math.max(120, Math.min(420, availableSpace));
+
+    citySuggestions.style.top = openAbove
+      ? `${searchBoxRect.top - wrapperRect.top - maxHeight - 10}px`
+      : `${searchBoxRect.bottom - wrapperRect.top + 10}px`;
+    citySuggestions.style.maxHeight = `${maxHeight}px`;
+    citySuggestions.classList.add('show');
+  }
+
+  function selectSuggestion(cityName) {
+    const match = indiaCities.find(city => city.name.toLowerCase() === cityName.toLowerCase());
+    const finalName = match ? match.name : cityName;
+    searchInput.value = finalName;
+    hideSuggestions();
+
+    if (match && match.page) {
+      window.location.href = match.page;
+      return;
+    }
+
+    const allCards = [...document.querySelectorAll('.place-card h3')];
+    const targetCard = allCards.find(card => card.textContent.toLowerCase().includes(finalName.toLowerCase()));
+    if (targetCard) {
+      targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetCard.closest('.place-card')?.classList.add('highlight-card');
+      setTimeout(() => targetCard.closest('.place-card')?.classList.remove('highlight-card'), 1800);
+    }
+  }
+
+  function renderSuggestions(query = '') {
+    const trimmedQuery = query.trim();
+    const category = Object.keys(recommendationGroups).find(name => name.toLowerCase() === trimmedQuery.toLowerCase());
+    if (category) {
+      const recommendedCities = recommendationGroups[category]
+        .map(name => indiaCities.find(city => city.name === name))
+        .filter(Boolean);
+      citySuggestions.innerHTML = `
+        <div class="search-suggestion-item" style="cursor:default; background:transparent; color:#183b4d; font-weight:700;">Recommended ${category.toLowerCase()}</div>
+        ${recommendedCities.map(city => `
+          <button type="button" class="search-suggestion-item" data-city="${city.name}">${city.name} <span style="color:#64748b; font-size:0.78rem;">• ${city.state}</span></button>
+        `).join('')}
+      `;
+      showSuggestions();
+      return;
+    }
+
+    const matches = indiaCities.filter(city => {
+      const haystack = `${city.name} ${city.state}`.toLowerCase();
+      return haystack.includes(trimmedQuery.toLowerCase());
+    });
+
+    const suggestionList = trimmedQuery ? matches : indiaCities;
+
+    if (!suggestionList.length) {
+      citySuggestions.innerHTML = '<div class="search-suggestion-item" style="cursor:default; background:rgba(148,163,184,0.06); color:#64748b;">No matching city found</div>';
+      showSuggestions();
+      return;
+    }
+
+    citySuggestions.innerHTML = suggestionList.slice(0, 8).map(city => `
+      <button type="button" class="search-suggestion-item" data-city="${city.name}">${city.name} <span style="color:#64748b; font-size:0.78rem;">• ${city.state}</span></button>
+    `).join('');
+    showSuggestions();
+  }
+
+  searchInput.addEventListener('focus', () => renderSuggestions(searchInput.value));
+  searchInput.addEventListener('input', (e) => renderSuggestions(e.target.value));
+
+  citySuggestions.addEventListener('click', (event) => {
+    const item = event.target.closest('.search-suggestion-item');
+    if (!item) return;
+    selectSuggestion(item.dataset.city);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.search-wrapper')) {
+      hideSuggestions();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideSuggestions();
+  });
+
+  document.querySelector('.search-btn').addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      const match = indiaCities.find(city => city.name.toLowerCase() === query.toLowerCase());
+      if (match) {
+        selectSuggestion(match.name);
+        return;
+      }
+      alert('Searching for: "' + query + '"\n\nPlan your next outing in India! 🌍');
+      hideSuggestions();
+    } else {
+      renderSuggestions();
+    }
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.querySelector('.search-btn').click();
+  });
+
+  document.querySelectorAll('.tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      const category = tag.dataset.category;
+      searchInput.value = category;
+      renderSuggestions(category);
+    });
+  });
+
+  document.querySelectorAll('.explore-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const city = btn.closest('.place-card').querySelector('h3').textContent;
+      if (city === 'New Delhi') {
+        e.stopPropagation();
+        window.location.href = 'delhi.html';
+      } else {
+        alert('Opening details for ' + city + '...\n\nFull page coming soon! 🗺️');
+      }
+    });
+  });
+</script>
+</body>
+</html>
